@@ -37,3 +37,34 @@ def test_load_from_json(tmpdir):
         temp_json_file.write('[{"observations":[1, 2, 3]},{"observations":[4, 5, 6]}]')
     result = load_json(example_path)
     npt.assert_array_equal(result, [[1, 2, 3], [4, 5, 6]])
+
+def test_daily_min():
+    """Test that daily_min works"""
+    from inflammation.models import daily_min
+
+    test_input = np.array([[-3, 3],
+                          [-2, 2],
+                          [0, 0]])
+    test_result = np.array([-3, 0])
+
+    npt.assert_array_equal(daily_min(test_input), test_result)
+
+def test_daily_max():
+    """Test that daily_max works"""
+    from inflammation.models import daily_max
+
+    test_input = np.array([[-3, 3],
+                          [-2, 2],
+                          [0, 0]])
+    test_result = np.array([0, 3])
+
+    npt.assert_array_equal(daily_max(test_input), test_result)
+
+def test_daily_min_string():
+    """Test for TypeError when passing strings"""
+    import pytest
+
+    from inflammation.models import daily_min
+
+    with pytest.raises(TypeError):
+        error_expected = daily_min([['Hello', 'there'], ['General', 'Kenobi']])
